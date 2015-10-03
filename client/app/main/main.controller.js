@@ -21,6 +21,16 @@ angular.module('hackference2015App')
       $http.delete('/api/things/' + thing._id);
     };
 
+    console.log("raww");
+
+    require(["esri/map", "dojo/domReady!"], function(Map) { 
+  var map = new Map("map", {
+    center: [-118, 34.5],
+    zoom: 8,
+    basemap: "topo"
+  });
+});
+
     $scope.$on('$destroy', function () {
       socket.unsyncUpdates('thing');
     });
