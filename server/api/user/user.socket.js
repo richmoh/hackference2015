@@ -34,14 +34,12 @@ exports.register = function(socket) {
 
   			if (err) console.log(err);
 
-  			
-
-        Beacon.find(function(err, beacons){
+        Beacon.find().populate('_user', 'name email lg lt').exec(function(err, beacons){
 
           socket.emit('userGeoUpdate', beacons);
 
         });
-  			//res.status(200).send('OK');
+  			
   		});
 
   	});
