@@ -58,7 +58,6 @@
       <script src="bower_components/angular-cookies/angular-cookies.js"></script>
       <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
       <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-      <script src="bower_components/lodash/dist/lodash.compat.js"></script>
       <script src="bower_components/angular-socket-io/socket.js"></script>
       <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
       <!-- endbower -->
@@ -90,5 +89,59 @@
         <!-- endbuild -->
         <link rel="stylesheet" href="http://js.arcgis.com/3.14/esri/css/esri.css">
         <script src="http://js.arcgis.com/3.14/"></script>
+        <style>
+      html, body {
+        height: 100%;
+        margin: 0px;
+        padding: 0px;
+        width: 100%;
+      }
+
+     @-webkit-keyframes
+       pulse
+      {
+        0%
+        {
+          opacity: 1.0;
+
+        }
+        45%
+        {
+          opacity: .20;
+
+        }
+        100%
+        {
+          opacity: 1.0;
+
+        }
+      }
+     @-moz-keyframes
+       pulse
+      {
+        0%
+        {
+          opacity: 1.0;
+        }
+        45%
+        {
+          opacity: .20;
+
+        }
+        100%
+        {
+          opacity: 1.0;
+        }
+      }
+
+      #map_graphics_layer {
+        -webkit-animation-duration: 3s;
+        -webkit-animation-iteration-count: infinite;
+        -webkit-animation-name: pulse;
+        -moz-animation-duration: 3s;
+        -moz-animation-iteration-count: infinite;
+        -moz-animation-name: pulse;
+      }
+    </style>
 </body>
 </html>

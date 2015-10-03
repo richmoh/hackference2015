@@ -3,7 +3,47 @@
 var emitGeoUpdate = null;
 
 angular.module('hackference2015App')
-  .controller('MainCtrl', function ($scope, $http, socket, $cookieStore, User) {
+  .controller('MainCtrl', function ($scope, $http, socket, $cookieStore, User, esir) {
+    $scope.watchId = null;
+
+    $scope.map = $scope.Point = $scope.SimpleMarkerSymbol = $scope.SimpleLineSymbol = 
+        $scope.Graphic = $scope.Color= null;
+    $scope.initFunc = function(map) {
+     
+      if( navigator.geolocation ) {  
+        console.log('rarrrra');
+        navigator.geolocation.getCurrentPosition(esir.zoomToLocation, function(){console.log('err')});
+        $scope.watchId = navigator.geolocation.watchPosition(esir.showLocation, function(){console.log('err')});
+      } else {
+        alert("Browser doesn't support Geolocation. Visit http://caniuse.com to see browser support for the Geolocation API.");
+      }
+    }
+
+window.s = $scope;
+    $scope.setBeacons = function(beacons){
+      esir.setBeacons(beacons);
+    }
+    // $scope.tt = "hi";
+    // $scope.test = function(){
+    //   if( navigator.geolocation ) {  
+        
+    //     setTimeout(function(){
+    //       navigator.geolocation.getCurrentPosition(function(i){
+    //         $scope.tt = i.coords.latitude + " , " + i.coords.longitude;
+    //         $scope.test();
+    //       }, function(){console.log('err')});
+          
+    //     },2000);
+        
+    //     // watchId = navigator.geolocation.watchPosition(showLocation, locationError);
+    //   } else {
+    //     alert("Browser doesn't support Geolocation. Visit http://caniuse.com to see browser support for the Geolocation API.");
+    //   }
+    // };
+    // $scope.test();
+    // return;
+
+
     $scope.awesomeThings = [];
 
     $scope.inputs = {
@@ -37,11 +77,6 @@ angular.module('hackference2015App')
     // $http.get('/api/things').success(function(awesomeThings) {
     //   $scope.awesomeThings = awesomeThings;
     //   socket.syncUpdates('thing', $scope.awesomeThings);
-    // });
-
-    // $http.get('/api/beacons').success(function(mybeacons) {
-    //   $scope.mybeacons = mybeacons;
-    //   socket.syncUpdates('beacon', $scope.mybeacons);
     // });
 
     $scope.addBeacon = function() {
@@ -137,14 +172,10 @@ angular.module('hackference2015App')
 
     
     //console.log("raww");
-
-    require(["esri/map", "dojo/domReady!"], function(Map) { 
-  var map = new Map("map", {
-    center: [-118, 34.5],
-    zoom: 8,
-    basemap: "topo"
-  });
-});
+    var promise = esir.initESIR($scope, "map");
+    promise.then(function() {
+      $scope.initFunc();
+    });
 
     $scope.$on('$destroy', function () {
       socket.unsyncUpdates('thing');
