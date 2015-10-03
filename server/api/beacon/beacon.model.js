@@ -10,7 +10,7 @@ var BeaconSchema = new Schema({
   lg: String,
   lt: String,
   active: Boolean,
-  _user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+  _user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 });
 
 module.exports = mongoose.model('Beacon', BeaconSchema);

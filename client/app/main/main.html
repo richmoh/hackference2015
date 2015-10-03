@@ -1,2 +1,19 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 <div id="map"></div>
+
+
+<form class="form-inline">
+
+  <div class="form-group">
+
+    <input type="text" class="form-control" id="beaconInput" placeholder="Enter a beacon" ng-model="inputs.beaconText">
+
+  </div>
+ 
+  <button type="submit" class="btn btn-default" ng-click="addBeacon()">Add</button>
+
+</form>
+<ul id="mybeaconlist">
+	<li ng-repeat="b in mybeacons">{{b.text}}</li>
+</ul>
+
