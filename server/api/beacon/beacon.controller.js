@@ -5,9 +5,13 @@ var Beacon = require('./beacon.model');
 
 // Get list of beacons
 exports.index = function(req, res) {
-  Beacon.find(function (err, beacons) {
+  
+  Beacon.find({_user: req.user._id}, function (err, beacons) {
+
     if(err) { return handleError(res, err); }
+    
     return res.status(200).json(beacons);
+
   });
 };
 
@@ -22,6 +26,9 @@ exports.show = function(req, res) {
 
 // Creates a new beacon in the DB.
 exports.create = function(req, res) {
+
+  req.body._user = req.user._id;
+
   Beacon.create(req.body, function(err, beacon) {
     if(err) { return handleError(res, err); }
     return res.status(201).json(beacon);

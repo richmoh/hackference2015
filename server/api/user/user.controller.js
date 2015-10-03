@@ -9,6 +9,14 @@ var validationError = function(res, err) {
   return res.status(422).json(err);
 };
 
+// io.on('connection', function (socket) {
+//   socket.on('geoupdate', function(){
+//     console.log('geoupdate done');
+//   });
+// });
+
+
+
 /**
  * Get list of users
  * restriction: 'admin'
@@ -76,6 +84,26 @@ exports.changePassword = function(req, res, next) {
     } else {
       res.status(403).send('Forbidden');
     }
+  });
+};
+
+exports.updateGeolocation = function(req, res, next) {
+  
+  var userId = req.user._id;
+
+  var lg = String(req.body.lg);
+  var lt = String(req.body.lt);
+
+  User.findById(userId, function (err, user) {
+
+    user.lg = lg;
+    user.lt = lt;
+
+    user.save(function(err) {
+      if (err) return validationError(res, err);
+      res.status(200).send('OK');
+    });
+
   });
 };
 
