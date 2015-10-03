@@ -28,7 +28,9 @@ exports.register = function(socket) {
 
     var coords = [lg, lt];
 
-    var maxDistance = 1000;
+    console.log(coords);
+
+    var maxDistance = 1;
 
   	User.findById(data.userId, function (err, user) {
 
@@ -38,23 +40,32 @@ exports.register = function(socket) {
 
   			if (err) console.log(err);
 
-        // User.find({
+        User.find({
+          loc: {
+            $near: {
+               $geometry: {
+                  type: "Point" ,
+                  coordinates: coords
+               },
+               $maxDistance: 1000
+            }
+          }
+        }).exec(function(err, users){
+
+          socket.emit('userGeoUpdate', users);
+
+        });
+
+        // Beacon.find({
         //   loc: {
         //     $near: coords,
         //     $maxDistance: maxDistance
         //   }
-        // })
+        // }).populate('_user', 'name email loc').exec(function(err, beacons){
 
-        Beacon.find({
-          loc: {
-            $near: coords,
-            $maxDistance: maxDistance
-          }
-        }).populate('_user', 'name email loc').exec(function(err, beacons){
+        //   socket.emit('userGeoUpdate', beacons);
 
-          socket.emit('userGeoUpdate', beacons);
-
-        });
+        // });
   			
   		});
 

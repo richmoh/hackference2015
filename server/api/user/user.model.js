@@ -17,7 +17,7 @@ var UserSchema = new Schema({
   salt: String,
   loc: {
     type: [Number],
-    index: '2d'
+    index: '2dsphere'
   },
   beacons: [String],
   facebook: {},

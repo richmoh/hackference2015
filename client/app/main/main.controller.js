@@ -7,9 +7,12 @@ angular.module('hackference2015App')
     $scope.awesomeThings = [];
 
     $scope.inputs = {
-
-      lg: -1.88801,
-      lt: 52.4770815,
+      //52.475903, -1.888465
+      //52.476833, -1.892256
+      //52.476709, -1.891624
+      //52.475859, -1.893555
+      lg: -1.893555,
+      lt: 52.475859,
       beaconText: '',
       searchText: ''
 
@@ -54,7 +57,7 @@ angular.module('hackference2015App')
 
         $scope.mybeacons.push($scope.inputs.beaconText);
         $scope.inputs.beaconText = '';
-        
+
       });
 
       
