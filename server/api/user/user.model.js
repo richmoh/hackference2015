@@ -15,6 +15,8 @@ var UserSchema = new Schema({
   hashedPassword: String,
   provider: String,
   salt: String,
+  lg: String,
+  lt: String,
   facebook: {},
   twitter: {},
   google: {},
