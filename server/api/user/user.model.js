@@ -15,8 +15,11 @@ var UserSchema = new Schema({
   hashedPassword: String,
   provider: String,
   salt: String,
-  lg: String,
-  lt: String,
+  loc: {
+    type: [Number],
+    index: '2d'
+  },
+  beacons: [String],
   facebook: {},
   twitter: {},
   google: {},

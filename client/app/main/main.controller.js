@@ -8,12 +8,21 @@ angular.module('hackference2015App')
 
     $scope.inputs = {
 
-      lg: '12',
-      lt: '12',
+      lg: -1.88801,
+      lt: 52.4770815,
       beaconText: '',
-      searchText: 'Lego'
+      searchText: ''
 
     };
+
+    User.get().$promise.then(function(user){
+        
+      $scope.mybeacons = user.beacons;
+
+    });
+
+
+    console.log(User.get());
 
     socket.socket.on('userGeoUpdate', function(data){
 
@@ -27,25 +36,28 @@ angular.module('hackference2015App')
     //   socket.syncUpdates('thing', $scope.awesomeThings);
     // });
 
-    $http.get('/api/beacons').success(function(mybeacons) {
-      $scope.mybeacons = mybeacons;
-      socket.syncUpdates('beacon', $scope.mybeacons);
-    });
+    // $http.get('/api/beacons').success(function(mybeacons) {
+    //   $scope.mybeacons = mybeacons;
+    //   socket.syncUpdates('beacon', $scope.mybeacons);
+    // });
 
     $scope.addBeacon = function() {
       if($scope.inputs.beaconText === '') {
         return;
       }
 
-      $http.post('/api/beacons', { 
+      $http.post('/api/users/beacon', { 
 
-        text: $scope.inputs.beaconText, 
-        lg: $scope.inputs.lg,
-        lt: $scope.inputs.lt
+        text: $scope.inputs.beaconText
 
+      }).success(function(){
+
+        $scope.mybeacons.push($scope.inputs.beaconText);
+        $scope.inputs.beaconText = '';
+        
       });
 
-      $scope.inputs.beaconText = '';
+      
     };
 
     $scope.deleteBeacon = function(beacon) {
@@ -63,6 +75,11 @@ angular.module('hackference2015App')
     $scope.deleteThing = function(thing) {
       $http.delete('/api/things/' + thing._id);
     };
+
+    $scope.match = function()
+    {
+      $scope.geoUpdateS($scope.inputs);
+    }
 
     $scope.geoUpdate = function(args)
     {

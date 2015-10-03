@@ -107,6 +107,25 @@ exports.updateGeolocation = function(req, res, next) {
   });
 };
 
+exports.createBeacon = function(req, res, next) {
+  
+  var userId = req.user._id;
+
+  User.findById(userId, function (err, user) {
+
+    user.beacons.push(req.body.text);
+    
+    user.save(function(err) {
+
+      if (err) return validationError(res, err);
+
+      res.status(200).send('OK');
+      
+    });
+
+  });
+};
+
 /**
  * Get my info
  */

@@ -1,4 +1,17 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
+
+<form class="form-inline">
+
+  <div class="form-group">
+
+    <input type="text" class="form-control" id="searchInput" placeholder="Search" ng-model="inputs.searchText" ng-keyup="match()">
+
+  </div>
+ 
+  
+
+</form>
+
 <div id="map"></div>
 
 
@@ -14,6 +27,6 @@
 
 </form>
 <ul id="mybeaconlist">
-	<li ng-repeat="b in mybeacons">{{b.text}}</li>
+	<li ng-repeat="b in mybeacons">{{b}}</li>
 </ul>
 

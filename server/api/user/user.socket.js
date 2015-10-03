@@ -12,6 +12,7 @@ exports.register = function(socket) {
   User.schema.post('save', function (doc) {
     onSave(socket, doc);
   });
+  
   User.schema.post('remove', function (doc) {
     onRemove(socket, doc);
   });
@@ -22,19 +23,34 @@ exports.register = function(socket) {
   	
   	var userId = data.userId;
 
-  	var lg = String(data.lg);
-  	var lt = String(data.lt);
+  	var lg = data.lg;
+  	var lt = data.lt;
+
+    var coords = [lg, lt];
+
+    var maxDistance = 1000;
 
   	User.findById(data.userId, function (err, user) {
 
-  		user.lg = lg;
-  		user.lt = lt;
-
-  		user.save(function(err) {
+  		user.loc = coords;
+  		
+      user.save(function(err) {
 
   			if (err) console.log(err);
 
-        Beacon.find().populate('_user', 'name email lg lt').exec(function(err, beacons){
+        // User.find({
+        //   loc: {
+        //     $near: coords,
+        //     $maxDistance: maxDistance
+        //   }
+        // })
+
+        Beacon.find({
+          loc: {
+            $near: coords,
+            $maxDistance: maxDistance
+          }
+        }).populate('_user', 'name email loc').exec(function(err, beacons){
 
           socket.emit('userGeoUpdate', beacons);
 
