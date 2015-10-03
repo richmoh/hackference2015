@@ -34,8 +34,7 @@ angular.module('hackference2015App')
 				self.theMap = new Map(elementId, {
 					center: [-118, 34.5],
 					zoom: 250,
-					basemap: "topo",
-					infoWindow:popup
+					basemap: "topo"
 				});
 
 				deferred.resolve();
