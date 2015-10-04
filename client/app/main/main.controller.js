@@ -36,14 +36,25 @@ angular.module('hackference2015App')
       $scope.inputs.lg = location.coords.longitude;
       $scope.inputs.lt = location.coords.latitude;
 
-      $scope.match();
+      //$scope.match();
     }    
+
+    $scope.loadMines = function()
+    {
+
+      $http.get('/api/beacons', {}).success(function(mines){
+
+        $scope.values.mines = mines;
+      });
+    }
+
+    $scope.loadMines();
 
     $scope.initFunc = function() {
      
       if( navigator.geolocation ) {  
         
-        console.log('rarrrra');
+        //console.log('rarrrra');
 
         navigator.geolocation.getCurrentPosition($scope.updateLocation, function(){console.log('err')}, {maximumAge:500, timeout:500, enableHighAccuracy: true});
         //$scope.watchId = navigator.geolocation.watchPosition(esir.showLocation, function(){console.log('err')});
