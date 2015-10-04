@@ -39,6 +39,7 @@ angular.module('hackference2015App')
 
       $scope.inputs.lg = location.coords.longitude;
       $scope.inputs.lt = location.coords.latitude;
+      $scope.inputs.ac = location.coords.accuracy;
       $scope.$apply();
       //$scope.match();
 
@@ -47,6 +48,9 @@ angular.module('hackference2015App')
 
     $scope.findMines = function(l){
       var minesClose = 0;
+      if($scope.inputs.ac > 25){
+        return false;
+      }
       $scope.values.mines.forEach(function(mine){
         var s = mine.lt + " , " + mine.lg;
         // if($scope.minesDone.indexOf(s) === -1){
