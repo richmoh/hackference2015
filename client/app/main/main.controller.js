@@ -22,6 +22,10 @@ angular.module('hackference2015App')
 
     };
 
+    $scope.values = {
+      mineCount: 0
+    };
+
     $scope.log = [];
 
     $scope.updateLocation = function(location)

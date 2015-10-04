@@ -5,7 +5,7 @@ angular.module('hackference2015App')
     $stateProvider
       .state('main', {
         url: '/',
-        templateUrl: 'app/main/main.html',
+        templateUrl: 'app/main/minesweeper.html',
         controller: 'MainCtrl'
       });
   });

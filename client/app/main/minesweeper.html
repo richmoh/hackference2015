@@ -1,0 +1,13 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+
+<div class="container">
+<div id="mine-count" style="font-size: 100px; text-align: center;">{{values.mineCount}}</div>
+
+<button type="submit" class="btn btn-danger" ng-click="addMine()" style="width: 100%; padding: 20px; font-size: 20px; font-weight: bold;">PLACE MINE</button>
+
+<div>{{inputs.lg}}, {{inputs.lt}}</div>
+
+<div ng-repeat="l in log">{{l}}</div>
+</div>
+
