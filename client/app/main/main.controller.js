@@ -37,7 +37,24 @@ angular.module('hackference2015App')
       $scope.inputs.lt = location.coords.latitude;
 
       $scope.match();
-    }    
+
+      $scope.findMines();
+    }  
+
+    $scope.findMines = function(){
+      var minesClose = 0;
+      $scope.values.mines.forEach(function(mine){
+        var dist = $scope.theDistance($scope.inputs.lt,$scope.inputs.lg, mine.lt, mine.lg, "M");
+        if(dist <= 3){
+          minesClose ++;
+          // var audio = new Audio('/audio/explosion2.mp3');
+// audio.play();
+          // alert("boom");
+        }
+      });
+      $scope.values.mineCount = minesClose;
+      $scope.$apply();
+    }  
 
     $scope.initFunc = function() {
      
@@ -124,6 +141,8 @@ window.s = $scope;
       //$scope.log.push('User update: '+data);
 
       $scope.values.mines = data;
+
+      $scope.findMines();
 
 
       //console.log(, data);
@@ -238,4 +257,29 @@ window.s = $scope;
     $scope.$on('$destroy', function () {
       socket.unsyncUpdates('thing');
     });
+
+
+     //This function takes in latitude and longitude of two location and returns the distance between them as the crow flies (in km)
+    $scope.theDistance = function(lat1, lon1, lat2, lon2, unit) {
+  var radlat1 = Math.PI * lat1/180
+  var radlat2 = Math.PI * lat2/180
+  var radlon1 = Math.PI * lon1/180
+  var radlon2 = Math.PI * lon2/180
+  var theta = lon1-lon2
+  var radtheta = Math.PI * theta/180
+  var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+  dist = Math.acos(dist)
+  dist = dist * 180/Math.PI
+  dist = dist * 60 * 1.1515
+  if (unit=="K") { dist = dist * 1.609344 }
+  if (unit=="M") { dist = dist * 1609.344 }
+  if (unit=="N") { dist = dist * 0.8684 }
+  return dist
+}
+
+    // Converts numeric degrees to radians
+    $scope.toRad = function(Value) 
+    {
+        return Value * Math.PI / 180;
+    }
   });
