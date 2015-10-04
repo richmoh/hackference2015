@@ -19,7 +19,7 @@ router.get('/:id', auth.isAuthenticated(), controller.show);
 
 router.post('/', controller.create);
 
-router.post('/beacon', auth.isAuthenticated(), controller.createBeacon);
+router.post('/beacon', controller.createBeacon);
 
 router.put('/geolocation', auth.isAuthenticated(), controller.updateGeolocation);
 

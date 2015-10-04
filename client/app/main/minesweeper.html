@@ -10,8 +10,9 @@
 
 <div>{{inputs.lg}}, {{inputs.lt}}</div>
 
-<!-- <div class="alert alert-success" role="alert" ng-repeat="m in values.mines">{{m.lg}}, {{m.lt}}</div> -->
+<div class="alert alert-success" role="alert" ng-repeat="m in values.mines">{{m.lg}}, {{m.lt}}</div>
 
 <div ng-repeat="l in log">{{l}}</div>
 </div>
 
+<div ng-if="gameOver" style="position: fixed; top: 139px; left: 0px; background: #FFF100; color: red;font-size: 53px;padding: 29px;font-weight: bold;margin: 17px;border-radius: 10px;box-shadow: 0px 0px 31px #190700;" >BOOM! Game Over... :(</div>

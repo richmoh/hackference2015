@@ -6,6 +6,8 @@ angular.module('hackference2015App')
   .controller('MainCtrl', function ($scope, $http, socket, $cookieStore, User, esir) {
     $scope.watchId = null;
 
+    $scope.gameOver = false;
+
     $scope.map = $scope.Point = $scope.SimpleMarkerSymbol = $scope.SimpleLineSymbol = 
         $scope.Graphic = $scope.Color= null;
     
@@ -37,30 +39,34 @@ angular.module('hackference2015App')
 
       $scope.inputs.lg = location.coords.longitude;
       $scope.inputs.lt = location.coords.latitude;
-$scope.$apply();
+      $scope.$apply();
       //$scope.match();
 
-      $scope.findMines();
+      $scope.findMines(location.coords);
     }  
 
-    $scope.findMines = function(){
+    $scope.findMines = function(l){
       var minesClose = 0;
       $scope.values.mines.forEach(function(mine){
-        if($scope.minesDone.indexOf(mine)){
-          var dist = $scope.theDistance($scope.inputs.lt,$scope.inputs.lg, mine.lt, mine.lg, "M");
+        var s = mine.lt + " , " + mine.lg;
+        // if($scope.minesDone.indexOf(s) === -1){
+          var dist = $scope.theDistance(l.latitude,l.longitude, mine.lt, mine.lg, "M");
           if(dist <= 5){
             minesClose ++;
-            if(dist <= 1){
-              $scope.minesDone.push(mine);
-              alert("boom");
+            if(dist <= 2){
+              // $scope.minesDone.push(s);
+              //alert("boom");
+
+              $scope.gameOver = true;
             }
             // var audio = new Audio('/audio/explosion2.mp3');
   // audio.play();
             // alert("boom");
           }
-        }
+        // }
         
       });
+
       $scope.values.mineCount = minesClose;
       $scope.$apply();
     }    
@@ -130,13 +136,9 @@ window.s = $scope;
       mine: []
     };
 
-    User.get().$promise.then(function(user){
-        
-      $scope.beacons.mine = user.beacons;
+    
 
-    });
-
-    console.log(User.get());
+    //console.log(User.get());
 
     // socket.socket.on('userGeoUpdate', function(data){
 
