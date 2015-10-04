@@ -8,16 +8,51 @@ angular.module('hackference2015App')
 
     $scope.map = $scope.Point = $scope.SimpleMarkerSymbol = $scope.SimpleLineSymbol = 
         $scope.Graphic = $scope.Color= null;
-    $scope.initFunc = function(map) {
+    
+
+    $scope.inputs = {
+      //52.475903, -1.888465
+      //52.476833, -1.892256
+      //52.476709, -1.891624
+      //52.475859, -1.893555
+      lg: -1.893555,
+      lt: 52.475859,
+      beaconText: '',
+      searchText: ''
+
+    };
+
+    $scope.log = [];
+
+    $scope.updateLocation = function(location)
+    {
+      console.log("LOCATION", location.coords.longitude);
+
+      $scope.inputs.lg = location.coords.longitude;
+      $scope.inputs.lt = location.coords.latitude;
+
+      $scope.match();
+    }    
+
+    $scope.initFunc = function() {
      
       if( navigator.geolocation ) {  
+        
         console.log('rarrrra');
-        navigator.geolocation.getCurrentPosition(esir.zoomToLocation, function(){console.log('err')});
-        $scope.watchId = navigator.geolocation.watchPosition(esir.showLocation, function(){console.log('err')});
+
+        navigator.geolocation.getCurrentPosition($scope.updateLocation, function(){console.log('err')}, {maximumAge:500, timeout:500, enableHighAccuracy: true});
+        //$scope.watchId = navigator.geolocation.watchPosition(esir.showLocation, function(){console.log('err')});
+
+        $scope.watchId = navigator.geolocation.watchPosition($scope.updateLocation, function(){console.log('err')}, {maximumAge:500, timeout:500, enableHighAccuracy: true});
+      
       } else {
         alert("Browser doesn't support Geolocation. Visit http://caniuse.com to see browser support for the Geolocation API.");
       }
     }
+
+    $scope.initFunc();
+
+    
 
 window.s = $scope;
     $scope.setBeacons = function(beacons){
@@ -46,21 +81,16 @@ window.s = $scope;
 
     $scope.awesomeThings = [];
 
-    $scope.inputs = {
-      //52.475903, -1.888465
-      //52.476833, -1.892256
-      //52.476709, -1.891624
-      //52.475859, -1.893555
-      lg: -1.893555,
-      lt: 52.475859,
-      beaconText: '',
-      searchText: ''
+    
 
+    $scope.beacons = {
+      usersWithBeacons: [],
+      mine: []
     };
 
     User.get().$promise.then(function(user){
         
-      $scope.mybeacons = user.beacons;
+      $scope.beacons.mine = user.beacons;
 
     });
 
@@ -69,9 +99,16 @@ window.s = $scope;
 
     socket.socket.on('userGeoUpdate', function(data){
 
-      //I need to get the beacons
+      console.log("Update via sockets");
 
-      console.log('User updated on server side to client', data);
+      //I need to get the beacons
+      console.log(data);
+      //$scope.log.push('User update: '+data);
+
+      $scope.beacons.usersWithBeacons = data.users;
+
+
+      //console.log(, data);
     });
 
     // $http.get('/api/things').success(function(awesomeThings) {
@@ -90,7 +127,7 @@ window.s = $scope;
 
       }).success(function(){
 
-        $scope.mybeacons.push($scope.inputs.beaconText);
+        $scope.beacons.mine.push($scope.inputs.beaconText);
         $scope.inputs.beaconText = '';
 
       });
@@ -172,10 +209,10 @@ window.s = $scope;
 
     
     //console.log("raww");
-    var promise = esir.initESIR($scope, "map");
-    promise.then(function() {
-      $scope.initFunc();
-    });
+    // var promise = esir.initESIR($scope, "map");
+    // promise.then(function() {
+    //   $scope.initFunc();
+    // });
 
     $scope.$on('$destroy', function () {
       socket.unsyncUpdates('thing');

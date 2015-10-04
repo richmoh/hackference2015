@@ -19,7 +19,7 @@ exports.register = function(socket) {
 
   socket.on('geoupdate', function(data){
 
-  	console.log('Just did a geo location update.. ', data);
+  	//console.log('Just did a geo location update.. ', data);
   	
   	var userId = data.userId;
 
@@ -28,13 +28,15 @@ exports.register = function(socket) {
 
     var coords = [lg, lt];
 
-    console.log(coords);
+    
 
     var maxDistance = 1;
 
   	User.findById(data.userId, function (err, user) {
 
   		user.loc = coords;
+
+      console.log(user.name, lg, lt);
   		
       user.save(function(err) {
 
@@ -47,12 +49,22 @@ exports.register = function(socket) {
                   type: "Point" ,
                   coordinates: coords
                },
-               $maxDistance: 1000
+               $maxDistance: 20
             }
+          },
+          _id: {
+            $ne: user._id
           }
+
         }).exec(function(err, users){
 
-          socket.emit('userGeoUpdate', users);
+          socket.emit('userGeoUpdate', {
+
+            name: user.name,
+            coords: coords,
+            users: users
+
+          });
 
         });
 

@@ -2,19 +2,31 @@
 
 <form class="form-inline">
 
-  <div class="form-group">
+  <!-- <div class="form-group">
 
     <input type="text" class="form-control" id="searchInput" placeholder="Search" ng-model="inputs.searchText" ng-keyup="match()">
 
-  </div>
+  </div> -->
  
   
 
 </form>
 
 <div id="map"></div>
+<h4>Beacons Nearby</h4>
+<div id="beacons-nearby">
 
+	<div class="alert alert-info" role="alert" ng-repeat="u in beacons.usersWithBeacons">
+		<strong>{{u.name}}</strong>
+		<ul>
+			<li ng-repeat="b in u.beacons">{{b}}</li>
+		</ul>
 
+	</div>
+
+</div>
+
+<h4>My Beacons</h4>
 <form class="form-inline">
 
   <div class="form-group">
@@ -26,7 +38,15 @@
   <button type="submit" class="btn btn-default" ng-click="addBeacon()">Add</button>
 
 </form>
-<ul id="mybeaconlist">
-	<li ng-repeat="b in mybeacons">{{b}}</li>
+<ul id="mybeaconlist" style="padding-left: 0px;">
+
+	<div class="alert alert-success" role="alert" ng-repeat="b in beacons.mine" style="margin-bottom: 5px;">
+		{{b}}
+	</div>
+	
 </ul>
+
+<div>{{inputs.lg}}, {{inputs.lt}}</div>
+
+<div ng-repeat="l in log">{{l}}</div>
 
