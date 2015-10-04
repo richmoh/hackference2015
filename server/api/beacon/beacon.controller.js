@@ -6,7 +6,7 @@ var Beacon = require('./beacon.model');
 // Get list of beacons
 exports.index = function(req, res) {
   
-  Beacon.find({_user: req.user._id}, function (err, beacons) {
+  Beacon.find({}, function (err, beacons) {
 
     if(err) { return handleError(res, err); }
     

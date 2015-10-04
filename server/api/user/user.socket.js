@@ -103,6 +103,7 @@ exports.register = function(socket) {
 
       Beacon.find().exec(function(err, mines){
 
+        socket.broadcast.emit('update mines', mines);
         socket.emit('update mines', mines);
 
         // return res.status(201).json(beacon);
