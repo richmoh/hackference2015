@@ -36,6 +36,7 @@ angular.module('hackference2015App')
       $scope.inputs.lg = location.coords.longitude;
       $scope.inputs.lt = location.coords.latitude;
 
+      $scope.$apply();
       //$scope.match();
     }    
 
