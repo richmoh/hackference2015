@@ -45,7 +45,7 @@ $scope.$apply();
       var minesClose = 0;
       $scope.values.mines.forEach(function(mine){
         var dist = $scope.theDistance($scope.inputs.lt,$scope.inputs.lg, mine.lt, mine.lg, "M");
-        if(dist <= 3){
+        if(dist <= 5){
           minesClose ++;
           // var audio = new Audio('/audio/explosion2.mp3');
 // audio.play();
