@@ -120,19 +120,15 @@ window.s = $scope;
     //   socket.syncUpdates('thing', $scope.awesomeThings);
     // });
 
-    $scope.addBeacon = function() {
-      if($scope.inputs.beaconText === '') {
-        return;
-      }
-
-      $http.post('/api/users/beacon', { 
-
-        text: $scope.inputs.beaconText
-
-      }).success(function(){
+    $scope.placeMine = function() {
+      
+      console.log('called place mine');
+      //reate mine
+      $http.post('/api/beacon', $scope.inputs).success(function(){
 
         $scope.beacons.mine.push($scope.inputs.beaconText);
-        $scope.inputs.beaconText = '';
+        
+        alert('Mine added at.. ', $scope.inputs)
 
       });
 
