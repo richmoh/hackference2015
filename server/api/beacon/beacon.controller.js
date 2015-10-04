@@ -27,8 +27,6 @@ exports.show = function(req, res) {
 // Creates a new beacon in the DB.
 exports.create = function(req, res) {
 
-  req.body._user = req.user._id;
-
   Beacon.create(req.body, function(err, beacon) {
     if(err) { return handleError(res, err); }
     return res.status(201).json(beacon);

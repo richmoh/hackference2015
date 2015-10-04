@@ -4,6 +4,8 @@
 <div class="container">
 <div id="mine-count" style="font-size: 100px; text-align: center;">{{values.mineCount}}</div>
 
+<div class="alert alert-success" role="alert" ng-repeat="m in values.mines">{{m.lg}}, {{m.lt}}</div>
+
 <button type="submit" class="btn btn-danger" ng-click="placeMine()" style="width: 100%; padding: 20px; font-size: 20px; font-weight: bold;">PLACE MINE</button>
 
 <div>{{inputs.lg}}, {{inputs.lt}}</div>

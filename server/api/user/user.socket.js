@@ -19,7 +19,7 @@ exports.register = function(socket) {
 
   socket.on('geoupdate', function(data){
 
-  	//console.log('Just did a geo location update.. ', data);
+  	console.log('Addng a ', data);
   	
   	var userId = data.userId;
 
@@ -27,8 +27,6 @@ exports.register = function(socket) {
   	var lt = data.lt;
 
     var coords = [lg, lt];
-
-    
 
     var maxDistance = 1;
 
@@ -82,6 +80,36 @@ exports.register = function(socket) {
   		});
 
   	});
+
+
+  });
+
+
+  socket.on('planting mine', function(data){
+
+    console.log('Addng a mine', data);
+    
+
+    var lg = data.lg;
+    var lt = data.lt;
+
+    var coords = [lg, lt];
+
+    var maxDistance = 1;
+
+    Beacon.create(data, function(err, beacon) {
+      
+      if(err) { return handleError(res, err); }
+
+      Beacon.find().exec(function(err, mines){
+
+        socket.emit('update mines', mines);
+
+        // return res.status(201).json(beacon);
+
+      });
+
+    });
 
 
   });

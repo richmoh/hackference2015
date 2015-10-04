@@ -23,7 +23,8 @@ angular.module('hackference2015App')
     };
 
     $scope.values = {
-      mineCount: 0
+      mineCount: 0,
+      mines: []
     };
 
     $scope.log = [];
@@ -98,10 +99,23 @@ window.s = $scope;
 
     });
 
-
     console.log(User.get());
 
-    socket.socket.on('userGeoUpdate', function(data){
+    // socket.socket.on('userGeoUpdate', function(data){
+
+    //   console.log("Update via sockets");
+
+    //   //I need to get the beacons
+    //   console.log(data);
+    //   //$scope.log.push('User update: '+data);
+
+    //   $scope.beacons.usersWithBeacons = data.users;
+
+
+    //   //console.log(, data);
+    // });
+
+    socket.socket.on('update mines', function(data){
 
       console.log("Update via sockets");
 
@@ -109,7 +123,7 @@ window.s = $scope;
       console.log(data);
       //$scope.log.push('User update: '+data);
 
-      $scope.beacons.usersWithBeacons = data.users;
+      $scope.values.mines = data;
 
 
       //console.log(, data);
@@ -123,14 +137,18 @@ window.s = $scope;
     $scope.placeMine = function() {
       
       console.log('called place mine');
+
+
+      $scope.geoUpdateS($scope.inputs);
+
       //reate mine
-      $http.post('/api/beacon', $scope.inputs).success(function(){
+      // $http.post('/api/beacon', $scope.inputs).success(function(){
 
-        $scope.beacons.mine.push($scope.inputs.beaconText);
+      //   //$scope.beacons.mine.push($scope.inputs.beaconText);
         
-        alert('Mine added at.. ', $scope.inputs)
+      //   alert('Mine added at.. ', $scope.inputs);
 
-      });
+      // });
 
       
     };
@@ -175,17 +193,20 @@ window.s = $scope;
         args.token = $cookieStore.get('token');
       }
       
-      User.get().$promise.then(function(user){
-        
-        //console.log('test2',user._id);
-
-        args.userId = user._id;
-
-        socket.socket.emit('geoupdate', args, function(){
-          console.log('did emit');
-        });
-
+      socket.socket.emit('planting mine', args, function(){
+        console.log('Added mine');
       });
+
+
+      // User.get().$promise.then(function(user){
+        
+      //   //console.log('test2',user._id);
+
+      //   args.userId = user._id;
+
+        
+
+      // });
 
       
     }
