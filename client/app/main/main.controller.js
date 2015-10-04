@@ -27,6 +27,8 @@ angular.module('hackference2015App')
       mines: []
     };
 
+    $scope.minesDone = [];
+
     $scope.log = [];
 
     $scope.updateLocation = function(location)
@@ -44,13 +46,20 @@ $scope.$apply();
     $scope.findMines = function(){
       var minesClose = 0;
       $scope.values.mines.forEach(function(mine){
-        var dist = $scope.theDistance($scope.inputs.lt,$scope.inputs.lg, mine.lt, mine.lg, "M");
-        if(dist <= 5){
-          minesClose ++;
-          // var audio = new Audio('/audio/explosion2.mp3');
-// audio.play();
-          // alert("boom");
+        if($scope.minesDone.indexOf(mine)){
+          var dist = $scope.theDistance($scope.inputs.lt,$scope.inputs.lg, mine.lt, mine.lg, "M");
+          if(dist <= 5){
+            minesClose ++;
+            if(dist <= 1){
+              $scope.minesDone.push(mine);
+              alert("boom");
+            }
+            // var audio = new Audio('/audio/explosion2.mp3');
+  // audio.play();
+            // alert("boom");
+          }
         }
+        
       });
       $scope.values.mineCount = minesClose;
       $scope.$apply();
